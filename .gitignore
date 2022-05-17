@@ -14,8 +14,6 @@ gradle-app.setting
 gradle-wrapper.jar
 gradlew
 gradlew.bat
-
-# Avoid ignore Gradle wrappper properties
 gradle-wrapper.properties
 
 # Cache of project
