@@ -6,9 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,12 +48,18 @@ public class SeleniumTest {
         pages.put(EmployeePage.path, EmployeePage.head);
         pages.put(DirectoryPage.path, DirectoryPage.head);
         pages.put(MaintenancePage.path, MaintenancePage.head);
+        pages.put(InfoPage.path, InfoPage.head);
     }
 
     @Before
     public void setup() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        HashMap<String, Object> prefs = new HashMap<>();
+        prefs.put("download.default_directory", System.getProperty("user.dir"));
+        options.setExperimentalOption("prefs", prefs);
+
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
@@ -102,6 +110,22 @@ public class SeleniumTest {
 
         driver.navigate().back();
         assertTrue(getBodyText().contains(Dashboard.head));
+    }
+
+    @Test
+    public void downloadTest() throws InterruptedException {
+        login();
+        waitAndReturnElement(InfoPage.path).click();
+        assertTrue(getBodyText().contains(InfoPage.head));
+
+        waitAndReturnElement(InfoPage.file1).click();
+        waitAndReturnElement(InfoPage.file2).click();
+        Thread.sleep(4000);
+
+        File f = new File(System.getProperty("user.dir") + "\\3.png");
+        File f2 = new File(System.getProperty("user.dir") + "\\4.png");
+        assertTrue(f.exists());
+        assertTrue(f2.exists());
     }
 
     @After
