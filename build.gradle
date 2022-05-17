@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'junit:junit:4.13.2'
+    testCompile 'org.seleniumhq.selenium:selenium-java:4.1.4'
+    testCompile 'org.seleniumhq.selenium:selenium-chrome-driver:4.1.4'
+    testCompile 'io.github.bonigarcia:webdrivermanager:5.1.1'
+}
